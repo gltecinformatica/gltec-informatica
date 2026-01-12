@@ -2,7 +2,7 @@
 
 ## Projeto Next.js
 
-Este é um projeto pessoal de minha loja, esse projeto web foi desenvolvido com Next.js, TypeScript e Tailwind CSS com um design responsivo.
+Este é um projeto pessoal de minha loja a GLTEC INFORMÁTICA, esse projeto web foi desenvolvido com Next.js, TypeScript e Tailwind CSS com um design responsivo.
 
 ## Tecnologias Utilizadas
 
@@ -76,7 +76,3 @@ pnpm start
 - `lib/` - Funções utilitárias e bibliotecas auxiliares
 - `public/` - Arquivos estáticos públicos (imagens, logos, etc.)
 - `styles/` - Arquivos CSS globais e configurações de estilo
-
-## Licença
-
-Este projeto pode ser licenciado conforme sua necessidade. Adicione um arquivo LICENSE para especificar a licença desejada.

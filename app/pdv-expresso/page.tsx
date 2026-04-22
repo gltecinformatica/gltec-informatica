@@ -1,22 +1,27 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function PDVExpresso() {
   const services = [
     {
       id: 1,
       name: "DETRAN-PE",
-      description: "Departamento Estadual de Trânsito de Pernambuco",
-      url: "https://www.detran.pe.gov.br/",
+      category: "governo",
+      description: "Serviços de Habilitação DETRAN-PE",
+      url: "https://www.detran.pe.gov.br/habilitacao",
       logo: "/pdv-logos/detran-pe.png",
       color: "bg-blue-600",
     },
     {
       id: 2,
       name: "GOV.BR",
+      category: "governo",
       description: "Portal de Serviços do Governo Federal",
       url: "https://www.gov.br/",
       logo: "/pdv-logos/gov-br.png",
@@ -25,6 +30,7 @@ export default function PDVExpresso() {
     {
       id: 3,
       name: "PORTAL DO EMPREENDEDOR",
+      category: "governo",
       description: "Portal do Empreendedor - MEI",
       url: "https://www.gov.br/empresas-e-negocios/pt-br/empreendedor",
       logo: "/pdv-logos/portal-empreendedor.png",
@@ -33,6 +39,7 @@ export default function PDVExpresso() {
     {
       id: 4,
       name: "CLARO",
+      category: "telecom",
       description: "Claro - Serviços de Telecomunicações",
       url: "https://www.claro.com.br/",
       logo: "/pdv-logos/claro.png",
@@ -41,6 +48,7 @@ export default function PDVExpresso() {
     {
       id: 5,
       name: "TIM",
+      category: "telecom",
       description: "TIM - Serviços de Telecomunicações",
       url: "https://www.tim.com.br/",
       logo: "/pdv-logos/tim.png",
@@ -49,14 +57,16 @@ export default function PDVExpresso() {
     {
       id: 6,
       name: "TSE",
-      description: "Portal de Serviços do Tribunal Superior Eleitoral",
-      url: "https://www.tse.jus.br",
+      category: "governo",
+      description: "Certidões e Autoatendimento Eleitoral",
+      url: "https://www.tse.jus.br/servicos-eleitorais/autoatendimento-eleitoral#/",
       logo: "/pdv-logos/tim.png",
       color: "bg-blue-500",
     },
     {
       id: 7,
       name: "ANTECEDENTES FEDERAL",
+      category: "documentos",
       description: "Portal de emissão do Antecedentes criminais Federal",
       url: "https://servicos.pf.gov.br/epol-sinic-publico/",
       logo: "/pdv-logos/tim.png",
@@ -65,12 +75,92 @@ export default function PDVExpresso() {
     {
       id: 8,
       name: "ANTECEDENTES ESTADUAL - PE / IITB",
+      category: "documentos",
       description:
         "Portal de emissão do Antecedentes criminais Estadual - IITB - PE",
       url: "https://abrir.link/DrYdw",
       logo: "/pdv-logos/placeholder-logo.png",
       color: "bg-blue-500",
     },
+    {
+      id: 9,
+      name: "AGENDAMENTO ELEITORAL",
+      category: "governo",
+      description: "Solicitar agendamento no TRE-PE",
+      url: "https://www.tre-pe.jus.br/servicos-eleitorais/solicitar-agendamento",
+      logo: "/pdv-logos/tse.png",
+      color: "bg-blue-700",
+    },
+    {
+      id: 10,
+      name: "DETRAN - VEÍCULOS",
+      category: "governo",
+      description: "Serviços de Veículos DETRAN-PE",
+      url: "https://www.detran.pe.gov.br/veiculos",
+      logo: "/pdv-logos/detran-pe.png",
+      color: "bg-sky-600",
+    },
+    {
+      id: 11,
+      name: "CONSULTAR VEÍCULO",
+      category: "governo",
+      description: "Consultar online dados de seus veículos (Gov.br)",
+      url: "https://www.gov.br/pt-br/servicos/consultar-online-dados-de-seus-veiculos",
+      logo: "/pdv-logos/gov-br.png",
+      color: "bg-green-700",
+    },
+    {
+      id: 12,
+      name: "BOLETO MEI",
+      category: "financas",
+      description: "Gerar boleto DAS para Microempreendedor Individual",
+      url: "https://www8.receita.fazenda.gov.br/simplesnacional/aplicacoes/atspo/pgmei.app/identificacao",
+      logo: "/pdv-logos/portal-empreendedor.png",
+      color: "bg-orange-600",
+    },
+    {
+      id: 13,
+      name: "GERAR GPS / SAL",
+      category: "financas",
+      description: "Cálculo de contribuições e emissão de GPS",
+      url: "https://sal.rfb.gov.br/calculo-contribuicao/contribuintes-2",
+      logo: "/pdv-logos/gov-br.png",
+      color: "bg-emerald-600",
+    },
+    {
+      id: 14,
+      name: "MEU INSS",
+      category: "governo",
+      description: "Portal de serviços e benefícios do INSS",
+      url: "https://meu.inss.gov.br/#/login",
+      logo: "/pdv-logos/gov-br.png",
+      color: "bg-blue-800",
+    },
+    {
+      id: 15,
+      name: "IMPRESSÃO DO CPF",
+      category: "documentos",
+      description: "Emissão de comprovante de inscrição no CPF",
+      url: "https://servicos.receita.fazenda.gov.br/servicos/cpf/impressaocomprovante/ConsultaImpressao.asp",
+      logo: "/pdv-logos/gov-br.png",
+      color: "bg-slate-700",
+    },
+    {
+      id: 16,
+      name: "GERAR PIX QRCODE",
+      category: "financas",
+      description: "Gerador de código PIX para pagamentos rápidos",
+      url: "https://geradordepix.com/",
+      logo: "/pdv-logos/placeholder-logo.png",
+      color: "bg-teal-500",
+    },
+  ];
+
+  const categories = [
+    { id: "governo", label: "Governamental" },
+    { id: "telecom", label: "Telecom" },
+    { id: "documentos", label: "Documentos" },
+    { id: "financas", label: "Financeiro" },
   ];
 
   return (
@@ -108,52 +198,77 @@ export default function PDVExpresso() {
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
-          {services.map((service) => (
-            <Card
-              key={service.id}
-              className="overflow-hidden hover:shadow-lg transition-shadow"
+        <Tabs defaultValue="governo" className="max-w-6xl mx-auto">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8 h-auto">
+            {categories.map((cat) => (
+              <TabsTrigger
+                key={cat.id}
+                value={cat.id}
+                className="text-sm md:text-base"
+              >
+                {cat.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+
+          {categories.map((cat) => (
+            <TabsContent
+              key={cat.id}
+              value={cat.id}
+              className="animate-in fade-in slide-in-from-bottom-4 duration-500 outline-none"
             >
-              <div className={`${service.color} p-4 text-white`}>
-                <div className="flex items-center justify-center mb-2">
-                  <div className="bg-white p-2 rounded-lg">
-                    <Image
-                      src={
-                        service.logo || "/placeholder.svg?height=60&width=60"
-                      }
-                      alt={`Logo ${service.name}`}
-                      width={60}
-                      height={60}
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                <h3 className="text-lg font-bold text-center">
-                  {service.name}
-                </h3>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {services
+                  .filter((service) => service.category === cat.id)
+                  .map((service) => (
+                    <Card
+                      key={service.id}
+                      className="overflow-hidden hover:shadow-lg transition-shadow border-orange-100"
+                    >
+                      <div className={`${service.color} p-4 text-white`}>
+                        <div className="flex items-center justify-center mb-2">
+                          <div className="bg-white p-2 rounded-lg">
+                            <Image
+                              src={
+                                service.logo ||
+                                "/placeholder.svg?height=60&width=60"
+                              }
+                              alt={`Logo ${service.name}`}
+                              width={60}
+                              height={60}
+                              className="object-contain"
+                            />
+                          </div>
+                        </div>
+                        <h3 className="text-lg font-bold text-center">
+                          {service.name}
+                        </h3>
+                      </div>
+                      <div className="p-4">
+                        <p className="text-gray-600 text-sm mb-4 text-center h-10">
+                          {service.description}
+                        </p>
+                        <Button
+                          asChild
+                          className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+                        >
+                          <a
+                            href={service.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-2"
+                          >
+                            Acessar Site
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                        </Button>
+                      </div>
+                    </Card>
+                  ))}
               </div>
-              <div className="p-4">
-                <p className="text-gray-600 text-sm mb-4 text-center">
-                  {service.description}
-                </p>
-                <Button
-                  asChild
-                  className="w-full bg-orange-500 hover:bg-orange-600 text-white"
-                >
-                  <a
-                    href={service.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2"
-                  >
-                    Acessar Site
-                    <ExternalLink className="h-4 w-4" />
-                  </a>
-                </Button>
-              </div>
-            </Card>
+            </TabsContent>
           ))}
-        </div>
+        </Tabs>
 
         {/* Info Section */}
         <div className="mt-12 bg-white rounded-lg p-6 shadow-sm">

@@ -1,29 +1,52 @@
 # GLTEC INFORMÁTICA
 
-## Projeto Next.js
+## Descrição do Projeto
 
-Este é um projeto pessoal de minha loja a GLTEC INFORMÁTICA, esse projeto web foi desenvolvido com Next.js, TypeScript e Tailwind CSS com um design responsivo.
+Plataforma web institucional e operacional da GLTEC INFORMÁTICA, empresa especializada em serviços de gráfica rápida e assistência técnica em TI localizada em Arcoverde-PE. O sistema atua como catálogo de serviços e central de ferramentas para otimização de atendimento ao cliente.
+
+### PDV Expresso
+
+O módulo central do projeto é o PDV Expresso, um dashboard projetado para centralizar links de serviços governamentais, telecomunicações e utilitários. Ele permite que colaboradores e clientes acessem portais oficiais com agilidade, oferecendo uma camada de gestão administrativa para personalização total dos recursos.
+
+## Funcionalidades Principais
+
+- Gerenciamento de Links: Cadastro, edição e exclusão de serviços externos.
+- Sistema de Busca: Filtro em tempo real por nome, descrição ou categoria.
+- Categorização Dinâmica: Criação e gestão de novas categorias de serviços via interface.
+- Persistência de Dados: Sincronização automática com o armazenamento local (localStorage) para manutenção do estado entre sessões.
+- Gestão de Identidade Visual: Upload e processamento de logos em Base64 para exibição padronizada.
+- Controle de Acesso: Área administrativa protegida por autenticação para operações de escrita.
+- Design Responsivo: Interface adaptável para dispositivos móveis e desktops.
 
 ## Tecnologias Utilizadas
 
-- Next.js
-- TypeScript
-- Tailwind CSS
-- React
-- Vários componentes UI personalizados.
+- Framework: Next.js (App Router)
+- Linguagem: TypeScript
+- Estilização: Tailwind CSS
+- Componentes de Interface: Shadcn UI / Radix UI
+- Gerenciamento de Formulários: React Hook Form / Zod
+- Ícones: Lucide React
+- Notificações: Sonner
 
-## Instalação
+## Estrutura do Diretório
 
-Para instalar as dependências do projeto, execute:
+- app/: Contém as rotas, layouts e lógica principal da aplicação.
+- components/: Componentes React reutilizáveis e elementos de interface.
+- auth-context.tsx: Gerenciamento de estado global de autenticação.
+- public/: Ativos estáticos como imagens e logos.
+- lib/: Utilitários e configurações de bibliotecas externas.
 
-`bash
-npm install
-`
+## Requisitos
 
-ou, se preferir usar o pnpm:
+- Node.js 18.x ou superior
+- Gerenciador de pacotes (NPM ou PNPM)
+
+## Instalação e Execução
+
+1. Instale as dependências:
 
 ```bash
-pnpm install
+npm install
 ```
 
 ## Como Rodar o Servidor de Desenvolvimento

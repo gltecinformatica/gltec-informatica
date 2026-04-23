@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -21,6 +22,8 @@ const linkSchema = z.object({
   category: z.string().min(1, "Categoria é obrigatória"),
   description: z.string().min(2, "Descrição é obrigatória"),
   color: z.string().default("bg-blue-500"),
+  logo: z.string().optional().or(z.literal("")),
+  newCategoryName: z.string().optional(),
 });
 
 type LinkFormData = z.infer<typeof linkSchema>;
@@ -30,6 +33,7 @@ interface LinkFormDialogProps {
   onClose: () => void;
   onSubmit: (data: any) => void;
   initialData?: any;
+  categories: { id: string; label: string }[];
 }
 
 export function LinkFormDialog({
@@ -37,11 +41,16 @@ export function LinkFormDialog({
   onClose,
   onSubmit,
   initialData,
+  categories,
 }: LinkFormDialogProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<LinkFormData>({
     resolver: zodResolver(linkSchema),
@@ -51,8 +60,20 @@ export function LinkFormDialog({
       category: "governo",
       description: "",
       color: "bg-blue-500",
+      logo: "",
     },
   });
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setValue("logo", reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleFormSubmit = (data: LinkFormData) => {
     onSubmit(data);
@@ -102,12 +123,25 @@ export function LinkFormDialog({
               {...register("category")}
               className="w-full border rounded-md p-2 text-sm"
             >
-              <option value="governo">Governamental</option>
-              <option value="telecom">Telecom</option>
-              <option value="documentos">Documentos</option>
-              <option value="financas">Financeiro</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.label}
+                </option>
+              ))}
+              <option value="new">+ Adicionar Nova Categoria</option>
             </select>
           </div>
+          {watch("category") === "new" && (
+            <div className="space-y-2 animate-in fade-in slide-in-from-top-1">
+              <Label htmlFor="newCategoryName">Nome da Nova Categoria</Label>
+              <Input
+                id="newCategoryName"
+                {...register("newCategoryName")}
+                placeholder="Ex: Saúde, Educação..."
+                autoFocus
+              />
+            </div>
+          )}
           <div className="space-y-2">
             <Label htmlFor="description">Descrição Curta</Label>
             <Input
@@ -128,6 +162,43 @@ export function LinkFormDialog({
               {...register("color")}
               placeholder="bg-orange-500"
             />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="logo">Logo do Serviço</Label>
+            <div className="flex gap-2">
+              <Input
+                id="logo"
+                {...register("logo")}
+                placeholder="URL ou selecione um arquivo"
+                className="flex-1"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                Procurar
+              </Button>
+            </div>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept="image/*"
+              className="hidden"
+            />
+            {watch("logo") && (
+              <div className="mt-2 flex items-center gap-2">
+                <span className="text-xs text-gray-500">Prévia:</span>
+                <div className="bg-white p-1 rounded border">
+                  <img
+                    src={watch("logo")}
+                    alt="Preview"
+                    className="h-8 w-8 object-contain"
+                  />
+                </div>
+              </div>
+            )}
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>

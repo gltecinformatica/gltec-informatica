@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -10,6 +10,8 @@ import {
   Pencil,
   Trash2,
   Lock,
+  Search,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -27,160 +29,201 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+const INITIAL_SERVICES = [
+  {
+    id: 1,
+    name: "DETRAN-PE",
+    category: "governo",
+    description: "Serviços de Habilitação DETRAN-PE",
+    url: "https://www.detran.pe.gov.br/habilitacao",
+    logo: "/pdv-logos/detran-pe.png",
+    color: "bg-blue-600",
+  },
+  {
+    id: 2,
+    name: "GOV.BR",
+    category: "governo",
+    description: "Portal de Serviços do Governo Federal",
+    url: "https://www.gov.br/",
+    logo: "/pdv-logos/gov-br.png",
+    color: "bg-green-600",
+  },
+  {
+    id: 3,
+    name: "PORTAL DO EMPREENDEDOR",
+    category: "governo",
+    description: "Portal do Empreendedor - MEI",
+    url: "https://www.gov.br/empresas-e-negocios/pt-br/empreendedor",
+    logo: "/pdv-logos/portal-empreendedor.png",
+    color: "bg-purple-600",
+  },
+  {
+    id: 4,
+    name: "CLARO",
+    category: "telecom",
+    description: "Claro - Serviços de Telecomunicações",
+    url: "https://www.claro.com.br/",
+    logo: "/pdv-logos/claro.png",
+    color: "bg-red-600",
+  },
+  {
+    id: 5,
+    name: "TIM",
+    category: "telecom",
+    description: "TIM - Serviços de Telecomunicações",
+    url: "https://www.tim.com.br/",
+    logo: "/pdv-logos/tim.png",
+    color: "bg-blue-500",
+  },
+  {
+    id: 6,
+    name: "TSE",
+    category: "governo",
+    description: "Certidões e Autoatendimento Eleitoral",
+    url: "https://www.tse.jus.br/servicos-eleitorais/autoatendimento-eleitoral#/",
+    logo: "/pdv-logos/tim.png",
+    color: "bg-blue-500",
+  },
+  {
+    id: 7,
+    name: "ANTECEDENTES FEDERAL",
+    category: "documentos",
+    description: "Portal de emissão do Antecedentes criminais Federal",
+    url: "https://servicos.pf.gov.br/epol-sinic-publico/",
+    logo: "/pdv-logos/tim.png",
+    color: "bg-yellow-500",
+  },
+  {
+    id: 8,
+    name: "ANTECEDENTES ESTADUAL - PE / IITB",
+    category: "documentos",
+    description:
+      "Portal de emissão do Antecedentes criminais Estadual - IITB - PE",
+    url: "https://abrir.link/DrYdw",
+    logo: "/pdv-logos/placeholder-logo.png",
+    color: "bg-blue-500",
+  },
+  {
+    id: 9,
+    name: "AGENDAMENTO ELEITORAL",
+    category: "governo",
+    description: "Solicitar agendamento no TRE-PE",
+    url: "https://www.tre-pe.jus.br/servicos-eleitorais/solicitar-agendamento",
+    logo: "/pdv-logos/tse.png",
+    color: "bg-blue-700",
+  },
+  {
+    id: 10,
+    name: "DETRAN - VEÍCULOS",
+    category: "governo",
+    description: "Serviços de Veículos DETRAN-PE",
+    url: "https://www.detran.pe.gov.br/veiculos",
+    logo: "/pdv-logos/detran-pe.png",
+    color: "bg-sky-600",
+  },
+  {
+    id: 11,
+    name: "CONSULTAR VEÍCULO",
+    category: "governo",
+    description: "Consultar online dados de seus veículos (Gov.br)",
+    url: "https://www.gov.br/pt-br/servicos/consultar-online-dados-de-seus-veiculos",
+    logo: "/pdv-logos/gov-br.png",
+    color: "bg-green-700",
+  },
+  {
+    id: 12,
+    name: "BOLETO MEI",
+    category: "financas",
+    description: "Gerar boleto DAS para Microempreendedor Individual",
+    url: "https://www8.receita.fazenda.gov.br/simplesnacional/aplicacoes/atspo/pgmei.app/identificacao",
+    logo: "/pdv-logos/portal-empreendedor.png",
+    color: "bg-orange-600",
+  },
+  {
+    id: 13,
+    name: "GERAR GPS / SAL",
+    category: "financas",
+    description: "Cálculo de contribuições e emissão de GPS",
+    url: "https://sal.rfb.gov.br/calculo-contribuicao/contribuintes-2",
+    logo: "/pdv-logos/gov-br.png",
+    color: "bg-emerald-600",
+  },
+  {
+    id: 14,
+    name: "MEU INSS",
+    category: "governo",
+    description: "Portal de serviços e benefícios do INSS",
+    url: "https://meu.inss.gov.br/#/login",
+    logo: "/pdv-logos/gov-br.png",
+    color: "bg-blue-800",
+  },
+  {
+    id: 15,
+    name: "IMPRESSÃO DO CPF",
+    category: "documentos",
+    description: "Emissão de comprovante de inscrição no CPF",
+    url: "https://servicos.receita.fazenda.gov.br/servicos/cpf/impressaocomprovante/ConsultaImpressao.asp",
+    logo: "/pdv-logos/gov-br.png",
+    color: "bg-slate-700",
+  },
+  {
+    id: 16,
+    name: "GERAR PIX QRCODE",
+    category: "financas",
+    description: "Gerador de código PIX para pagamentos rápidos",
+    url: "https://geradordepix.com/",
+    logo: "/pdv-logos/placeholder-logo.png",
+    color: "bg-teal-500",
+  },
+];
+
+const DEFAULT_CATEGORIES = [
+  { id: "governo", label: "Governamental" },
+  { id: "telecom", label: "Telecom" },
+  { id: "documentos", label: "Documentos" },
+  { id: "financas", label: "Financeiro" },
+];
+
 export default function PDVExpresso() {
-  const [services, setServices] = useState([
-    {
-      id: 1,
-      name: "DETRAN-PE",
-      category: "governo",
-      description: "Serviços de Habilitação DETRAN-PE",
-      url: "https://www.detran.pe.gov.br/habilitacao",
-      logo: "/pdv-logos/detran-pe.png",
-      color: "bg-blue-600",
-    },
-    {
-      id: 2,
-      name: "GOV.BR",
-      category: "governo",
-      description: "Portal de Serviços do Governo Federal",
-      url: "https://www.gov.br/",
-      logo: "/pdv-logos/gov-br.png",
-      color: "bg-green-600",
-    },
-    {
-      id: 3,
-      name: "PORTAL DO EMPREENDEDOR",
-      category: "governo",
-      description: "Portal do Empreendedor - MEI",
-      url: "https://www.gov.br/empresas-e-negocios/pt-br/empreendedor",
-      logo: "/pdv-logos/portal-empreendedor.png",
-      color: "bg-purple-600",
-    },
-    {
-      id: 4,
-      name: "CLARO",
-      category: "telecom",
-      description: "Claro - Serviços de Telecomunicações",
-      url: "https://www.claro.com.br/",
-      logo: "/pdv-logos/claro.png",
-      color: "bg-red-600",
-    },
-    {
-      id: 5,
-      name: "TIM",
-      category: "telecom",
-      description: "TIM - Serviços de Telecomunicações",
-      url: "https://www.tim.com.br/",
-      logo: "/pdv-logos/tim.png",
-      color: "bg-blue-500",
-    },
-    {
-      id: 6,
-      name: "TSE",
-      category: "governo",
-      description: "Certidões e Autoatendimento Eleitoral",
-      url: "https://www.tse.jus.br/servicos-eleitorais/autoatendimento-eleitoral#/",
-      logo: "/pdv-logos/tim.png",
-      color: "bg-blue-500",
-    },
-    {
-      id: 7,
-      name: "ANTECEDENTES FEDERAL",
-      category: "documentos",
-      description: "Portal de emissão do Antecedentes criminais Federal",
-      url: "https://servicos.pf.gov.br/epol-sinic-publico/",
-      logo: "/pdv-logos/tim.png",
-      color: "bg-yellow-500",
-    },
-    {
-      id: 8,
-      name: "ANTECEDENTES ESTADUAL - PE / IITB",
-      category: "documentos",
-      description:
-        "Portal de emissão do Antecedentes criminais Estadual - IITB - PE",
-      url: "https://abrir.link/DrYdw",
-      logo: "/pdv-logos/placeholder-logo.png",
-      color: "bg-blue-500",
-    },
-    {
-      id: 9,
-      name: "AGENDAMENTO ELEITORAL",
-      category: "governo",
-      description: "Solicitar agendamento no TRE-PE",
-      url: "https://www.tre-pe.jus.br/servicos-eleitorais/solicitar-agendamento",
-      logo: "/pdv-logos/tse.png",
-      color: "bg-blue-700",
-    },
-    {
-      id: 10,
-      name: "DETRAN - VEÍCULOS",
-      category: "governo",
-      description: "Serviços de Veículos DETRAN-PE",
-      url: "https://www.detran.pe.gov.br/veiculos",
-      logo: "/pdv-logos/detran-pe.png",
-      color: "bg-sky-600",
-    },
-    {
-      id: 11,
-      name: "CONSULTAR VEÍCULO",
-      category: "governo",
-      description: "Consultar online dados de seus veículos (Gov.br)",
-      url: "https://www.gov.br/pt-br/servicos/consultar-online-dados-de-seus-veiculos",
-      logo: "/pdv-logos/gov-br.png",
-      color: "bg-green-700",
-    },
-    {
-      id: 12,
-      name: "BOLETO MEI",
-      category: "financas",
-      description: "Gerar boleto DAS para Microempreendedor Individual",
-      url: "https://www8.receita.fazenda.gov.br/simplesnacional/aplicacoes/atspo/pgmei.app/identificacao",
-      logo: "/pdv-logos/portal-empreendedor.png",
-      color: "bg-orange-600",
-    },
-    {
-      id: 13,
-      name: "GERAR GPS / SAL",
-      category: "financas",
-      description: "Cálculo de contribuições e emissão de GPS",
-      url: "https://sal.rfb.gov.br/calculo-contribuicao/contribuintes-2",
-      logo: "/pdv-logos/gov-br.png",
-      color: "bg-emerald-600",
-    },
-    {
-      id: 14,
-      name: "MEU INSS",
-      category: "governo",
-      description: "Portal de serviços e benefícios do INSS",
-      url: "https://meu.inss.gov.br/#/login",
-      logo: "/pdv-logos/gov-br.png",
-      color: "bg-blue-800",
-    },
-    {
-      id: 15,
-      name: "IMPRESSÃO DO CPF",
-      category: "documentos",
-      description: "Emissão de comprovante de inscrição no CPF",
-      url: "https://servicos.receita.fazenda.gov.br/servicos/cpf/impressaocomprovante/ConsultaImpressao.asp",
-      logo: "/pdv-logos/gov-br.png",
-      color: "bg-slate-700",
-    },
-    {
-      id: 16,
-      name: "GERAR PIX QRCODE",
-      category: "financas",
-      description: "Gerador de código PIX para pagamentos rápidos",
-      url: "https://geradordepix.com/",
-      logo: "/pdv-logos/placeholder-logo.png",
-      color: "bg-teal-500",
-    },
-  ]);
+  const [services, setServices] = useState(INITIAL_SERVICES);
+  const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   const { isAuthenticated, login, logout } = useAuth();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingLink, setEditingLink] = useState<any>(null);
   const [tempPassword, setTempPassword] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Carrega os dados do localStorage ao iniciar
+  useEffect(() => {
+    const savedServices = localStorage.getItem("pdv_expresso_services");
+    if (savedServices) {
+      try {
+        setServices(JSON.parse(savedServices));
+      } catch (error) {
+        console.error("Erro ao carregar serviços", error);
+      }
+    }
+
+    const savedCategories = localStorage.getItem("pdv_expresso_categories");
+    if (savedCategories) {
+      setCategories(JSON.parse(savedCategories));
+    }
+
+    setHasLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (hasLoaded) {
+      localStorage.setItem("pdv_expresso_services", JSON.stringify(services));
+      localStorage.setItem(
+        "pdv_expresso_categories",
+        JSON.stringify(categories),
+      );
+    }
+  }, [services, categories, hasLoaded]);
 
   const handleAddClick = () => {
     if (!isAuthenticated) {
@@ -203,18 +246,37 @@ export default function PDVExpresso() {
   };
 
   const handleSaveLink = (data: any) => {
+    let finalCategory = data.category;
+
+    // Se for uma nova categoria, adiciona à lista
+    if (data.category === "new" && data.newCategoryName) {
+      const newLabel = data.newCategoryName;
+      const newId = newLabel
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, "-");
+
+      if (!categories.find((c) => c.id === newId)) {
+        setCategories([...categories, { id: newId, label: newLabel }]);
+      }
+      finalCategory = newId;
+    }
+
+    const { newCategoryName, ...cleanedData } = data;
+    const serviceData = { ...cleanedData, category: finalCategory };
+
     if (editingLink) {
       setServices(
-        services.map((s) => (s.id === editingLink.id ? { ...s, ...data } : s)),
+        services.map((s) =>
+          s.id === editingLink.id ? { ...s, ...serviceData } : s,
+        ),
       );
     } else {
-      const newLink = {
-        ...data,
-        id: Date.now(),
-        logo: "/pdv-logos/placeholder-logo.png",
-      };
-      setServices([...services, newLink]);
+      setServices([...services, { ...serviceData, id: Date.now() }]);
     }
+    setIsFormOpen(false);
+    setEditingLink(null);
   };
 
   const handleEdit = (service: any) => {
@@ -229,12 +291,14 @@ export default function PDVExpresso() {
     }
   };
 
-  const categories = [
-    { id: "governo", label: "Governamental" },
-    { id: "telecom", label: "Telecom" },
-    { id: "documentos", label: "Documentos" },
-    { id: "financas", label: "Financeiro" },
-  ];
+  const filteredServices = services.filter((service) => {
+    const searchLower = searchTerm.toLowerCase();
+    return (
+      service.name.toLowerCase().includes(searchLower) ||
+      service.description.toLowerCase().includes(searchLower) ||
+      service.category.toLowerCase().includes(searchLower)
+    );
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -298,97 +362,98 @@ export default function PDVExpresso() {
           </Button>
         </div>
 
-        <Tabs defaultValue="governo" className="max-w-6xl mx-auto">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8 h-auto">
+        {/* Barra de Pesquisa */}
+        <div className="max-w-2xl mx-auto mb-8 relative">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <Input
+              type="text"
+              placeholder="Pesquisar por nome ou descrição do serviço..."
+              className="pl-10 h-12 text-lg shadow-sm border-orange-100 focus:ring-orange-500 focus:border-orange-500 rounded-xl"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            {searchTerm && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 text-gray-400 hover:text-gray-600 rounded-full"
+                onClick={() => setSearchTerm("")}
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            )}
+          </div>
+        </div>
+
+        {searchTerm ? (
+          <div className="max-w-6xl mx-auto animate-in fade-in duration-300">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-gray-800">
+                Resultados da busca ({filteredServices.length})
+              </h3>
+              <Button variant="link" onClick={() => setSearchTerm("")} className="text-orange-500">
+                Limpar busca
+              </Button>
+            </div>
+            {filteredServices.length > 0 ? (
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {filteredServices.map((service) => (
+                  <ServiceCardComponent 
+                    key={service.id} 
+                    service={service} 
+                    isAuthenticated={isAuthenticated}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 bg-white rounded-lg border border-dashed border-gray-300">
+                <p className="text-gray-500 text-lg">Nenhum serviço encontrado para "{searchTerm}"</p>
+                <Button variant="outline" onClick={() => setSearchTerm("")} className="mt-4">
+                  Ver todos os serviços
+                </Button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <Tabs defaultValue="governo" className="max-w-6xl mx-auto">
+            <TabsList className="flex flex-wrap justify-start w-full mb-8 h-auto p-1 bg-gray-200/50">
+              {categories.map((cat) => (
+                <TabsTrigger
+                  key={cat.id}
+                  value={cat.id}
+                  className="text-sm md:text-base"
+                >
+                  {cat.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+
             {categories.map((cat) => (
-              <TabsTrigger
+              <TabsContent
                 key={cat.id}
                 value={cat.id}
-                className="text-sm md:text-base"
+                className="animate-in fade-in slide-in-from-bottom-4 duration-500 outline-none"
               >
-                {cat.label}
-              </TabsTrigger>
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {services
+                    .filter((service) => service.category === cat.id)
+                    .map((service) => (
+                      <ServiceCardComponent 
+                        key={service.id} 
+                        service={service} 
+                        isAuthenticated={isAuthenticated}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                      />
+                    ))}
+                </div>
+              </TabsContent>
             ))}
-          </TabsList>
-
-          {categories.map((cat) => (
-            <TabsContent
-              key={cat.id}
-              value={cat.id}
-              className="animate-in fade-in slide-in-from-bottom-4 duration-500 outline-none"
-            >
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {services
-                  .filter((service) => service.category === cat.id)
-                  .map((service) => (
-                    <Card
-                      key={service.id}
-                      className="relative overflow-hidden hover:shadow-lg transition-shadow border-orange-100"
-                    >
-                      {isAuthenticated && (
-                        <div className="absolute top-2 right-2 flex gap-1 z-10">
-                          <Button
-                            size="icon"
-                            variant="secondary"
-                            className="h-8 w-8"
-                            onClick={() => handleEdit(service)}
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            size="icon"
-                            variant="destructive"
-                            className="h-8 w-8"
-                            onClick={() => handleDelete(service.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      )}
-                      <div className={`${service.color} p-4 text-white`}>
-                        <div className="flex items-center justify-center mb-2">
-                          <div className="bg-white p-2 rounded-lg">
-                            <Image
-                              src={
-                                service.logo ||
-                                "/placeholder.svg?height=60&width=60"
-                              }
-                              alt={`Logo ${service.name}`}
-                              width={60}
-                              height={60}
-                              className="object-contain"
-                            />
-                          </div>
-                        </div>
-                        <h3 className="text-lg font-bold text-center">
-                          {service.name}
-                        </h3>
-                      </div>
-                      <div className="p-4">
-                        <p className="text-gray-600 text-sm mb-4 text-center h-10">
-                          {service.description}
-                        </p>
-                        <Button
-                          asChild
-                          className="w-full bg-orange-500 hover:bg-orange-600 text-white"
-                        >
-                          <a
-                            href={service.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-center gap-2"
-                          >
-                            Acessar Site
-                            <ExternalLink className="h-4 w-4" />
-                          </a>
-                        </Button>
-                      </div>
-                    </Card>
-                  ))}
-              </div>
-            </TabsContent>
-          ))}
-        </Tabs>
+          </Tabs>
+        )}
 
         {/* Info Section */}
         <div className="mt-12 bg-white rounded-lg p-6 shadow-sm">
@@ -487,8 +552,79 @@ export default function PDVExpresso() {
           }}
           onSubmit={handleSaveLink}
           initialData={editingLink}
+          categories={categories}
         />
       )}
     </div>
+  );
+}
+
+function ServiceCardComponent({ 
+  service, 
+  isAuthenticated, 
+  onEdit, 
+  onDelete 
+}: { 
+  service: any; 
+  isAuthenticated: boolean; 
+  onEdit: (s: any) => void; 
+  onDelete: (id: number) => void; 
+}) {
+  return (
+    <Card className="relative overflow-hidden hover:shadow-lg transition-shadow border-orange-100">
+      {isAuthenticated && (
+        <div className="absolute top-2 right-2 flex gap-1 z-10">
+          <Button
+            size="icon"
+            variant="secondary"
+            className="h-8 w-8"
+            onClick={() => onEdit(service)}
+          >
+            <Pencil className="h-4 w-4" />
+          </Button>
+          <Button
+            size="icon"
+            variant="destructive"
+            className="h-8 w-8"
+            onClick={() => onDelete(service.id)}
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+      <div className={`${service.color} p-4 text-white`}>
+        <div className="flex items-center justify-center mb-2">
+          <div className="bg-white p-2 rounded-lg w-16 h-16 flex items-center justify-center overflow-hidden">
+            <Image
+              src={service.logo || "/pdv-logos/placeholder-logo.png"}
+              alt={`Logo ${service.name}`}
+              width={48}
+              height={48}
+              className="object-contain max-h-full max-w-full"
+            />
+          </div>
+        </div>
+        <h3 className="text-lg font-bold text-center">{service.name}</h3>
+      </div>
+      <div className="p-4">
+        <p className="text-gray-600 text-sm mb-4 text-center h-10">
+          {service.description}
+        </p>
+        <Button
+          asChild
+          className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+        >
+          <a
+            href={service.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2"
+          >
+            Acessar Site
+            <ExternalLink className="h-4 w-4" />
+          </a>
+        </Button>
+      </div>
+    </Card>
   );
 }

@@ -466,7 +466,6 @@ export default function PDVExpresso() {
                 onChange={(e) => setTempPassword(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleLoginSubmit()}
               />
-              <p className="text-[10px] text-gray-400">Dica: admin123</p>
             </div>
             <Button
               onClick={handleLoginSubmit}

@@ -1,14 +1,34 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import {
+  ArrowLeft,
+  ExternalLink,
+  Plus,
+  Pencil,
+  Trash2,
+  Lock,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAuth } from "@/auth-context";
+import { LinkFormDialog } from "@/app/link-form-dialog";
+import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function PDVExpresso() {
-  const services = [
+  const [services, setServices] = useState([
     {
       id: 1,
       name: "DETRAN-PE",
@@ -154,7 +174,60 @@ export default function PDVExpresso() {
       logo: "/pdv-logos/placeholder-logo.png",
       color: "bg-teal-500",
     },
-  ];
+  ]);
+
+  const { isAuthenticated, login, logout } = useAuth();
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingLink, setEditingLink] = useState<any>(null);
+  const [tempPassword, setTempPassword] = useState("");
+
+  const handleAddClick = () => {
+    if (!isAuthenticated) {
+      setIsLoginOpen(true);
+    } else {
+      setEditingLink(null);
+      setIsFormOpen(true);
+    }
+  };
+
+  const handleLoginSubmit = async () => {
+    const success = await login(tempPassword);
+    if (success) {
+      toast.success("Autenticado com sucesso!");
+      setIsLoginOpen(false);
+      setTempPassword("");
+    } else {
+      toast.error("Senha incorreta!");
+    }
+  };
+
+  const handleSaveLink = (data: any) => {
+    if (editingLink) {
+      setServices(
+        services.map((s) => (s.id === editingLink.id ? { ...s, ...data } : s)),
+      );
+    } else {
+      const newLink = {
+        ...data,
+        id: Date.now(),
+        logo: "/pdv-logos/placeholder-logo.png",
+      };
+      setServices([...services, newLink]);
+    }
+  };
+
+  const handleEdit = (service: any) => {
+    setEditingLink(service);
+    setIsFormOpen(true);
+  };
+
+  const handleDelete = (id: number) => {
+    if (confirm("Tem certeza que deseja excluir este link?")) {
+      setServices(services.filter((s) => s.id !== id));
+      toast.success("Link removido!");
+    }
+  };
 
   const categories = [
     { id: "governo", label: "Governamental" },
@@ -169,12 +242,24 @@ export default function PDVExpresso() {
       <header className="bg-white border-b">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
-            <Button asChild variant="outline" size="sm">
-              <Link href="/" className="flex items-center gap-2">
-                <ArrowLeft className="h-4 w-4" />
-                Voltar
-              </Link>
-            </Button>
+            <div className="flex gap-2">
+              <Button asChild variant="outline" size="sm">
+                <Link href="/" className="flex items-center gap-2">
+                  <ArrowLeft className="h-4 w-4" />
+                  Voltar
+                </Link>
+              </Button>
+              {isAuthenticated && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={logout}
+                  className="text-gray-500"
+                >
+                  Sair do Admin
+                </Button>
+              )}
+            </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">PDV EXPRESSO</h1>
               <p className="text-gray-600">
@@ -187,15 +272,30 @@ export default function PDVExpresso() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Serviços Online
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Acesse rapidamente os principais portais e serviços que você
-            precisa. Clique nos botões abaixo para ser redirecionado para o site
-            oficial de cada serviço.
-          </p>
+        <div className="mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="text-center md:text-left">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+              Serviços Online
+            </h2>
+            <p className="text-gray-600 max-w-2xl">
+              Acesse rapidamente os principais portais e serviços que você
+              precisa.
+            </p>
+          </div>
+          <Button
+            onClick={handleAddClick}
+            className="bg-orange-500 hover:bg-orange-600 text-white flex items-center gap-2"
+          >
+            {isAuthenticated ? (
+              <>
+                <Plus className="h-4 w-4" /> Adicionar Link
+              </>
+            ) : (
+              <>
+                <Lock className="h-4 w-4" /> Área Restrita
+              </>
+            )}
+          </Button>
         </div>
 
         <Tabs defaultValue="governo" className="max-w-6xl mx-auto">
@@ -223,8 +323,28 @@ export default function PDVExpresso() {
                   .map((service) => (
                     <Card
                       key={service.id}
-                      className="overflow-hidden hover:shadow-lg transition-shadow border-orange-100"
+                      className="relative overflow-hidden hover:shadow-lg transition-shadow border-orange-100"
                     >
+                      {isAuthenticated && (
+                        <div className="absolute top-2 right-2 flex gap-1 z-10">
+                          <Button
+                            size="icon"
+                            variant="secondary"
+                            className="h-8 w-8"
+                            onClick={() => handleEdit(service)}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            size="icon"
+                            variant="destructive"
+                            className="h-8 w-8"
+                            onClick={() => handleDelete(service.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      )}
                       <div className={`${service.color} p-4 text-white`}>
                         <div className="flex items-center justify-center mb-2">
                           <div className="bg-white p-2 rounded-lg">
@@ -329,6 +449,47 @@ export default function PDVExpresso() {
           </p>
         </div>
       </footer>
+
+      {/* Modal de Login */}
+      <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
+        <DialogContent className="sm:max-w-[350px]">
+          <DialogHeader>
+            <DialogTitle>Acesso Administrativo</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="pass">Senha de Acesso</Label>
+              <Input
+                id="pass"
+                type="password"
+                value={tempPassword}
+                onChange={(e) => setTempPassword(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleLoginSubmit()}
+              />
+              <p className="text-[10px] text-gray-400">Dica: admin123</p>
+            </div>
+            <Button
+              onClick={handleLoginSubmit}
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+            >
+              Entrar
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de Formulário de Link */}
+      {isFormOpen && (
+        <LinkFormDialog
+          isOpen={isFormOpen}
+          onClose={() => {
+            setIsFormOpen(false);
+            setEditingLink(null);
+          }}
+          onSubmit={handleSaveLink}
+          initialData={editingLink}
+        />
+      )}
     </div>
   );
 }

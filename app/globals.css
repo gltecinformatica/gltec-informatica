@@ -10,9 +10,32 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  .section-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+      opacity 0.85s ease-out,
+      transform 0.85s ease-out,
+      box-shadow 0.85s ease-out,
+      border-color 0.85s ease-out;
+    will-change: opacity, transform, box-shadow, border-color;
+  }
+
+  .section-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+    box-shadow:
+      0 0 0 1px rgba(251, 146, 60, 0.25),
+      0 0 40px rgba(251, 146, 60, 0.12);
+    border-color: rgba(251, 146, 60, 0.35);
+  }
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;

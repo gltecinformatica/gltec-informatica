@@ -2,25 +2,37 @@
 
 ## Descrição do Projeto
 
-Plataforma web institucional e operacional da GLTEC INFORMÁTICA, empresa especializada em serviços de gráfica rápida e assistência técnica em TI localizada em Arcoverde-PE. O sistema atua como catálogo de serviços e central de ferramentas para otimização de atendimento ao cliente.
+Plataforma web moderna e responsiva da **GLTEC INFORMÁTICA**, empresa especializada em serviços de gráfica rápida e assistência técnica em TI em Arcoverde-PE. O projeto combina uma landing page institucional de alta conversão com uma ferramenta operacional (PDV Expresso) para agilizar o atendimento.
+
+### Landing Page Institucional
+
+A página inicial apresenta de forma profissional os dois pilares da empresa:
+
+- **Gráfica Rápida:** Impressões, encadernação, materiais publicitários e personalizados.
+- **Assistência Técnica:** Manutenção de hardware, redes, recuperação de dados e suporte empresarial.
+- **Recursos:** Animações de revelação (Scroll Reveal), carrossel de depoimentos, logotipos de clientes e integração direta com WhatsApp.
 
 ### PDV Expresso
 
-O módulo central do projeto é o PDV Expresso, um dashboard projetado para centralizar links de serviços governamentais, telecomunicações e utilitários. Ele permite que colaboradores e clientes acessem portais oficiais com agilidade, oferecendo uma camada de gestão administrativa para personalização total dos recursos.
+Dashboard operacional projetado para centralizar links de serviços essenciais (DETRAN, Gov.br, operadoras, etc.). Permite que colaboradores e clientes acessem portais oficiais com agilidade.
 
 ## Funcionalidades Principais
 
-- Gerenciamento de Links: Cadastro, edição e exclusão de serviços externos.
-- Sistema de Busca: Filtro em tempo real por nome, descrição ou categoria.
-- Categorização Dinâmica: Criação e gestão de novas categorias de serviços via interface.
-- Persistência de Dados: Sincronização automática com o armazenamento local (localStorage) para manutenção do estado entre sessões.
-- Gestão de Identidade Visual: Upload e processamento de logos em Base64 para exibição padronizada.
-- Controle de Acesso: Área administrativa protegida por autenticação para operações de escrita.
-- Design Responsivo: Interface adaptável para dispositivos móveis e desktops.
+- **Landing Page Completa:** Seções de serviços, diferenciais, depoimentos e formulário de contato.
+- **Gestão de Links (CRUD):** Cadastro, edição e exclusão de serviços no PDV Expresso.
+- **Busca Inteligente:** Filtro em tempo real no dashboard por nome, descrição ou categoria.
+- **Categorização Dinâmica:** Gestão de categorias de serviços via interface administrativa.
+- **Autenticação Segura:** Área administrativa protegida por senha, utilizando **HttpOnly Cookies** para persistência de sessão no servidor.
+- **Persistência Local:** Sincronização automática com `localStorage` para carregamento imediato do estado.
+- **Processamento de Imagens:** Upload de logos com conversão para Base64 para armazenamento simplificado.
+- **Modo Escuro (Dark Mode):** Interface otimizada para conforto visual por padrão.
 
 ## Tecnologias Utilizadas
 
-- Framework: Next.js (App Router)
+- **Framework:** Next.js 14+ (App Router)
+- **Estilização:** Tailwind CSS
+- **Componentes:** Shadcn UI / Radix UI
+- **Estado & Auth:** React Context API + Next.js Route Handlers
 - Linguagem: TypeScript
 - Estilização: Tailwind CSS
 - Componentes de Interface: Shadcn UI / Radix UI
@@ -28,22 +40,22 @@ O módulo central do projeto é o PDV Expresso, um dashboard projetado para cent
 - Ícones: Lucide React
 - Notificações: Sonner
 
-## Estrutura do Diretório
-
-- app/: Contém as rotas, layouts e lógica principal da aplicação.
-- components/: Componentes React reutilizáveis e elementos de interface.
-- auth-context.tsx: Gerenciamento de estado global de autenticação.
-- public/: Ativos estáticos como imagens e logos.
-- lib/: Utilitários e configurações de bibliotecas externas.
-
 ## Requisitos
 
 - Node.js 18.x ou superior
 - Gerenciador de pacotes (NPM ou PNPM)
 
+## Configuração de Ambiente
+
+Crie um arquivo `.env.local` na raiz do projeto e configure a senha do administrador:
+
+```env
+ADMIN_PASSWORD=sua_senha_aqui
+```
+
 ## Instalação e Execução
 
-1. Instale as dependências:
+1. **Instale as dependências:**
 
 ```bash
 npm install

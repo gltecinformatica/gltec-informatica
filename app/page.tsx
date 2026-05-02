@@ -139,14 +139,14 @@ export default function Home() {
                   Nossos Serviços
                 </h2>
                 <p className="mx-auto max-w-[900px] text-gray-400 md:text-lg">
-                  Oferecemos soluções completas em gráfica rápida e assistência
-                  técnica em TI.
+                  Oferecemos soluções completas em gráfica rápida, assistência
+                  técnica em TI e desenvolvimento de software.
                 </p>
               </div>
             </div>
             <div className="mt-16">
               <Tabs defaultValue="grafica" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 bg-slate-800 border border-slate-700">
+                <TabsList className="grid w-full grid-cols-3 bg-slate-800 border border-slate-700">
                   <TabsTrigger
                     value="grafica"
                     className="text-base data-[state=active]:bg-orange-600 data-[state=active]:text-white"
@@ -158,6 +158,12 @@ export default function Home() {
                     className="text-base data-[state=active]:bg-orange-600 data-[state=active]:text-white"
                   >
                     SERVIÇOS DE ASSISTÊNCIA TÉCNICA
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="software"
+                    className="text-base data-[state=active]:bg-orange-600 data-[state=active]:text-white"
+                  >
+                    DESENVOLVIMENTO DE SOFTWARE
                   </TabsTrigger>
                 </TabsList>
                 <TabsContent value="grafica" className="mt-8">
@@ -223,6 +229,7 @@ export default function Home() {
                     />
                   </div>
                 </TabsContent>
+
                 <TabsContent value="ti" className="mt-8">
                   <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     <TechServiceCard
@@ -232,10 +239,6 @@ export default function Home() {
                     <TechServiceCard
                       title="💾 Instalação de Programas e Sistemas"
                       description="Instalação e configuração de sistemas operacionais, softwares e aplicativos para uso pessoal ou empresarial."
-                    />
-                    <TechServiceCard
-                      title="💻 Desenvolvimento de Sistemas e Automação"
-                      description="Criação de sistemas personalizados e soluções de automação para otimizar processos e aumentar a produtividade."
                     />
                     <TechServiceCard
                       title="🌐 Redes e Conectividade"
@@ -256,6 +259,36 @@ export default function Home() {
                     <TechServiceCard
                       title="🏢 Serviços para Empresas"
                       description="Soluções completas em TI para empresas, incluindo manutenção preventiva, gestão de parque tecnológico e suporte contínuo."
+                    />
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="software" className="mt-8">
+                  {/* Serviços de Desenvolvimento de Software com 6 soluções específicas */}
+                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <TechServiceCard
+                      title="🌐 Desenvolvimento de Aplicativos Web"
+                      description="Criação de aplicações web modernas e responsivas utilizando as melhores tecnologias do mercado para proporcionar experiências de usuário excepcionais."
+                    />
+                    <TechServiceCard
+                      title="🛠️ Desenvolvimento de Sistemas Sob Medida"
+                      description="Soluções personalizadas conforme as necessidades específicas de seu negócio, integrando processos e otimizando a produtividade de sua empresa."
+                    />
+                    <TechServiceCard
+                      title="🔗 Integração de APIs e Serviços"
+                      description="Conexão eficiente entre diferentes sistemas e plataformas, permitindo automação de fluxos de trabalho e melhor comunicação entre aplicações."
+                    />
+                    <TechServiceCard
+                      title="📦 Migração e Modernização de Sistemas"
+                      description="Transformação de sistemas legados em soluções modernas, garantindo segurança dos dados e continuidade dos processos de negócio."
+                    />
+                    <TechServiceCard
+                      title="☁️ Implantação de Soluções em Nuvem"
+                      description="Migração e configuração de infraestrutura em nuvem, oferecendo escalabilidade, segurança e redução de custos operacionais para sua empresa."
+                    />
+                    <TechServiceCard
+                      title="🔧 Suporte e Manutenção de Software"
+                      description="Acompanhamento contínuo, correção de bugs, atualizações de segurança e melhorias de performance para manter seus sistemas sempre em perfeito funcionamento."
                     />
                   </div>
                 </TabsContent>
@@ -595,9 +628,11 @@ function ServiceCard({ title, items }: { title: string; items: string[] }) {
 function TechServiceCard({
   title,
   description,
+  items,
 }: {
   title: string;
-  description: string;
+  description?: string;
+  items?: string[];
 }) {
   return (
     <Card className="overflow-hidden border border-slate-700 bg-slate-900/50 hover:border-orange-500 hover:shadow-2xl hover:shadow-orange-600/20 transition-all duration-300 hover:scale-105 rounded-xl">
@@ -605,7 +640,18 @@ function TechServiceCard({
         <h3 className="text-lg font-bold text-white">{title}</h3>
       </div>
       <div className="p-6">
-        <p className="text-gray-400 leading-relaxed">{description}</p>
+        {items ? (
+          <ul className="space-y-3">
+            {items.map((item, index) => (
+              <li key={index} className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                <span className="text-gray-300 text-sm">{item}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-gray-400 leading-relaxed">{description}</p>
+        )}
       </div>
     </Card>
   );

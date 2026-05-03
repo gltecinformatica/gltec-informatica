@@ -113,17 +113,7 @@ export function AboutSection() {
             </motion.div>
 
             {/* Missão */}
-            <motion.div
-              className="p-6 rounded-xl bg-gradient-to-r from-orange-600/10 to-orange-500/10 border border-orange-500/30"
-              variants={itemVariants}
-            >
-              <p className="text-gray-200 italic text-base leading-relaxed">
-                "Nossa missão é proporcionar serviços de alta qualidade, com
-                agilidade e preço justo, contribuindo para o sucesso de nossos
-                clientes através de soluções eficientes em comunicação visual e
-                tecnologia."
-              </p>
-            </motion.div>
+            
           </motion.div>
 
           {/* Coluna Direita - Vídeo com Efeito */}

@@ -19,7 +19,7 @@ Dashboard operacional projetado para centralizar links de serviços essenciais (
 ## Funcionalidades Principais
 
 - **Landing Page Completa:** Seções de serviços, diferenciais, depoimentos e formulário de contato.
-- **Gestão de Links (CRUD):** Cadastro, edição e exclusão de serviços no PDV Expresso.
+- **Landing Page Completa:** Seções de serviços, diferenciais, **missão, visão e valores**, depoimentos e formulário de contato.
 - **Busca Inteligente:** Filtro em tempo real no dashboard por nome, descrição ou categoria.
 - **Categorização Dinâmica:** Gestão de categorias de serviços via interface administrativa.
 - **Autenticação Segura:** Área administrativa protegida por senha, utilizando **HttpOnly Cookies** para persistência de sessão no servidor.

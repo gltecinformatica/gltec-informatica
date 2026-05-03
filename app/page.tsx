@@ -3,7 +3,16 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Phone, Mail, Clock, CheckCircle } from "lucide-react";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  CheckCircle,
+  Target,
+  Eye,
+  ShieldCheck,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -12,6 +21,7 @@ import { ContactForm } from "@/components/contact-form";
 import { TestimonialCarousel } from "@/components/testimonial-carousel";
 import { ClientLogos } from "@/components/client-logos";
 import { WhatsAppButton } from "@/components/whatsapp-button";
+import { AboutSection } from "@/components/about-section";
 
 export default function Home() {
   useEffect(() => {
@@ -55,11 +65,18 @@ export default function Home() {
             >
               SOBRE
             </Link>
+            
             <Link
               href="#servicos"
               className="text-sm font-medium text-gray-300 hover:text-orange-500 transition-colors"
             >
               SERVIÇOS
+            </Link>
+            <Link
+              href="#depoimentos"
+              className="text-sm font-medium text-gray-300 hover:text-orange-500 transition-colors"
+            >
+              DEPOIMENTOS
             </Link>
             <Link
               href="/pdv-expresso"
@@ -335,10 +352,36 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Missão, Visão e Valores Section */}
+        <section
+          id="missao-visao-valores"
+          className="section-reveal py-24 bg-slate-900 border-b border-slate-800"
+        >
+          <div className="container px-4 md:px-6">
+            <div className="grid gap-8 md:grid-cols-3">
+              <MVVCard
+                title="Missão"
+                icon={Target}
+                description="Proporcionar serviços de alta qualidade, com agilidade e preço justo, contribuindo para o sucesso de nossos clientes através de soluções eficientes em comunicação visual e tecnologia."
+              />
+              <MVVCard
+                title="Visão"
+                icon={Eye}
+                description="Ser referência em inovação e qualidade nos serviços de TI e gráfica rápida, sendo a primeira escolha de empresas e pessoas físicas em Arcoverde e região."
+              />
+              <MVVCard
+                title="Valores"
+                icon={ShieldCheck}
+                description="Ética profissional, compromisso com o resultado, inovação constante, qualidade superior em cada detalhe e transparência total com o cliente."
+              />
+            </div>
+          </div>
+        </section>
+
         {/* Clients Section */}
         <section
           id="clientes"
-          className="section-reveal py-24 bg-slate-900 border-b border-slate-800"
+          className="section-reveal py-24 bg-slate-950 border-b border-slate-800"
         >
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
@@ -360,7 +403,7 @@ export default function Home() {
         {/* Testimonials Section */}
         <section
           id="depoimentos"
-          className="section-reveal py-24 bg-slate-950 border-b border-slate-800"
+          className="section-reveal py-24 bg-slate-900 border-b border-slate-800"
         >
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
@@ -380,42 +423,7 @@ export default function Home() {
         </section>
 
         {/* About Section */}
-        <section
-          id="sobre"
-          className="section-reveal py-24 bg-slate-900 border-b border-slate-800"
-        >
-          <div className="container px-4 md:px-6">
-            <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-center">
-              <div className="space-y-6">
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white">
-                  Sobre a GLTEC INFORMÁTICA
-                </h2>
-                <p className="text-gray-300 text-lg leading-relaxed">
-                  A GLTEC INFORMÁTICA é uma empresa especializada em serviços de
-                  gráfica rápida e assistência técnica em TI, atendendo clientes
-                  em Arcoverde e região. Com profissionais qualificados e
-                  equipamentos modernos, oferecemos soluções completas para
-                  pessoas físicas e empresas.
-                </p>
-                <p className="text-gray-300 text-lg leading-relaxed">
-                  Nossa missão é proporcionar serviços de alta qualidade, com
-                  agilidade e preço justo, contribuindo para o sucesso de nossos
-                  clientes através de soluções eficientes em comunicação visual
-                  e tecnologia.
-                </p>
-              </div>
-              <div className="flex justify-center">
-                <Image
-                  src="/placeholder.jpg?height=400&width=500"
-                  alt="GLTEC Informática"
-                  width={500}
-                  height={400}
-                  className="rounded-2xl object-cover border-2 border-orange-600 shadow-2xl"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
+        <AboutSection />
 
         {/* Contact Section */}
         <section
@@ -531,10 +539,26 @@ export default function Home() {
                 </li>
                 <li>
                   <Link
+                    href="#missao-visao-valores"
+                    className="text-gray-400 hover:text-orange-500 transition-colors"
+                  >
+                    Missão e Valores
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     href="#servicos"
                     className="text-gray-400 hover:text-orange-500 transition-colors"
                   >
                     Nossos Serviços
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="#depoimentos"
+                    className="text-gray-400 hover:text-orange-500 transition-colors"
+                  >
+                    Depoimentos
                   </Link>
                 </li>
                 <li>
@@ -621,6 +645,28 @@ function ServiceCard({ title, items }: { title: string; items: string[] }) {
           ))}
         </ul>
       </div>
+    </Card>
+  );
+}
+
+function MVVCard({
+  title,
+  icon: Icon,
+  description,
+}: {
+  title: string;
+  icon: any;
+  description: string;
+}) {
+  return (
+    <Card className="p-8 text-center border border-slate-700 bg-slate-950/50 hover:border-orange-500 hover:shadow-2xl hover:shadow-orange-600/20 transition-all duration-300 hover:scale-105 rounded-xl group">
+      <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-xl bg-orange-600/10 border border-orange-600/20 group-hover:bg-orange-600/20 group-hover:border-orange-600/50 transition-colors">
+        <Icon className="h-8 w-8 text-orange-500" />
+      </div>
+      <h3 className="mb-4 text-xl font-bold text-white uppercase tracking-wider">
+        {title}
+      </h3>
+      <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
     </Card>
   );
 }

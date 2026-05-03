@@ -1,6 +1,10 @@
 import type React from "react";
 import "@/app/globals.css";
 import { Inter } from "next/font/google";
+import "@fontsource/urbanist/400.css";
+import "@fontsource/urbanist/600.css";
+import "@fontsource/urbanist/700.css";
+import "@fontsource/urbanist/800.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/auth-context";
 import { Toaster } from "@/components/ui/sonner";

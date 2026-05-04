@@ -2,7 +2,7 @@
 
 ## Descrição do Projeto
 
-Plataforma web moderna e responsiva da **GLTEC INFORMÁTICA**, empresa especializada em serviços de gráfica rápida e assistência técnica em TI em Arcoverde-PE. O projeto combina uma landing page institucional de alta conversão com uma ferramenta operacional (PDV Expresso) para agilizar o atendimento.
+Plataforma web moderna e responsiva da **GLTEC INFORMÁTICA**, empresa especializada em serviços de Desenvolvimento de Software, Assistência técnica em TI e Gráfica rápida em Arcoverde-PE. O projeto combina uma landing page institucional de alta conversão com uma ferramenta operacional (PDV Expresso) para agilizar o atendimento.
 
 ### Landing Page Institucional
 
@@ -18,7 +18,6 @@ Dashboard operacional projetado para centralizar links de serviços essenciais (
 
 ## Funcionalidades Principais
 
-- **Landing Page Completa:** Seções de serviços, diferenciais, depoimentos e formulário de contato.
 - **Landing Page Completa:** Seções de serviços, diferenciais, **missão, visão e valores**, depoimentos e formulário de contato.
 - **Busca Inteligente:** Filtro em tempo real no dashboard por nome, descrição ou categoria.
 - **Categorização Dinâmica:** Gestão de categorias de serviços via interface administrativa.

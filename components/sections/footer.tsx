@@ -7,7 +7,7 @@ export const Footer: React.FC = () => {
   return (
     <footer className="bg-black text-white py-16 border-t border-slate-800">
       <div className="container px-4 md:px-6">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4 mb-10">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 mb-10">
           <div>
             <Link href="/" className="flex items-center gap-2 mb-4">
               <Image
@@ -110,11 +110,11 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
         </div>
-        <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400 text-sm">
-          <p>
-            © {new Date().getFullYear()} GLTEC INFORMÁTICA. Todos os direitos
-            reservados.
-          </p>
+        <div className="mt-8 pt-8 border-t border-gray-800 text-sm text-gray-400">
+          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <p>© {new Date().getFullYear()} GLTEC INFORMÁTICA.</p>
+            <p>Todos os direitos reservados.</p>
+          </div>
         </div>
       </div>
     </footer>

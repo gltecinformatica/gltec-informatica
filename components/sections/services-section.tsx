@@ -27,22 +27,22 @@ export const ServicesSection: React.FC = () => {
         </div>
         <div className="mt-16">
           <Tabs defaultValue="grafica" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 bg-slate-800 border border-slate-700">
+            <TabsList className="w-full grid grid-cols-1 sm:grid-cols-3 gap-2 bg-slate-800 border border-slate-700">
               <TabsTrigger
                 value="grafica"
-                className="text-base data-[state=active]:bg-orange-600 data-[state=active]:text-white"
+                className="w-full text-sm sm:text-base min-h-[64px] rounded-xl data-[state=active]:bg-orange-600 data-[state=active]:text-white"
               >
                 SERVIÇOS DE GRÁFICA RÁPIDA
               </TabsTrigger>
               <TabsTrigger
                 value="ti"
-                className="text-base data-[state=active]:bg-orange-600 data-[state=active]:text-white"
+                className="w-full text-sm sm:text-base min-h-[64px] rounded-xl data-[state=active]:bg-orange-600 data-[state=active]:text-white"
               >
                 SERVIÇOS DE ASSISTÊNCIA TÉCNICA
               </TabsTrigger>
               <TabsTrigger
                 value="software"
-                className="text-base data-[state=active]:bg-orange-600 data-[state=active]:text-white"
+                className="w-full text-sm sm:text-base min-h-[64px] rounded-xl data-[state=active]:bg-orange-600 data-[state=active]:text-white"
               >
                 DESENVOLVIMENTO DE SOFTWARE
               </TabsTrigger>

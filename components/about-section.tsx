@@ -43,7 +43,6 @@ export function AboutSection() {
       y: 0,
       transition: {
         duration: 0.8,
-        ease: "easeOut",
       },
     },
   };
@@ -53,7 +52,6 @@ export function AboutSection() {
       y: [0, -20, 0],
       transition: {
         duration: 4,
-        ease: "easeInOut",
         repeat: Infinity,
       },
     },
@@ -113,7 +111,6 @@ export function AboutSection() {
             </motion.div>
 
             {/* Missão */}
-            
           </motion.div>
 
           {/* Coluna Direita - Vídeo com Efeito */}
@@ -122,23 +119,22 @@ export function AboutSection() {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.8 }}
             variants={floatingVariants}
             animate="animate"
           >
-            <div className="relative w-full max-w-lg h-full min-h-[520px] flex flex-col justify-center">
+            <div className="relative w-full max-w-lg h-full min-h-[320px] lg:min-h-[520px] flex flex-col justify-center">
               {/* Gradiente de fundo (efeito de glow) */}
               <div className="absolute -inset-2 bg-gradient-to-r from-orange-600/20 to-blue-600/20 rounded-2xl blur-xl opacity-75"></div>
 
               {/* Container do Vídeo */}
-              <div className="relative bg-slate-900 rounded-2xl overflow-hidden border-2 border-slate-700 shadow-2xl h-full min-h-[420px] flex flex-col justify-center">
+              <div className="relative bg-slate-900 rounded-2xl overflow-hidden border-2 border-slate-700 shadow-2xl h-full min-h-[280px] lg:min-h-[420px] flex flex-col justify-center">
                 <video
                   autoPlay
                   loop
                   muted
                   playsInline
-                  className="w-full h-full min-h-[420px] object-cover aspect-video"
-                  style={{ maxHeight: "600px" }}
+                  className="w-full h-full object-cover aspect-video"
                 >
                   <source src="/Agent_video_Pippit.mp4" type="video/mp4" />
                   Seu navegador não suporta a tag de vídeo.
